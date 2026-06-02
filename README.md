@@ -40,12 +40,24 @@ code --list-extensions | grep inline   # extension is installed
 # Leave a comment on a line of any file in a git repo
 inline comment src/app.js:42 "retry wraps the flaky upstream"
 
-# In VS Code, open that file — the note renders inline on line 42.
-# Edits and branch switches update the rendered comments live.
+# See what's on this branch (each row starts with a short id)
+inline list
+
+# Dismiss it once addressed — by id prefix, by location, or all at once
+inline dismiss 63ac0e4f
+inline dismiss src/app.js:42
+inline dismiss --all
 ```
 
-The repo ships a playground at `examples/demo/app.js` with a couple of
-pre-seeded comments to confirm everything is wired up.
+In VS Code, open that file — the note renders inline on line 42. Edits, branch
+switches, and dismissals all update the rendered comments live.
+
+Try it against the playground at `examples/demo/app.js`:
+
+```bash
+inline comment examples/demo/app.js:4 "retry wraps the flaky upstream"
+inline comment examples/demo/app.js:18 "throws the last error after retries"
+```
 
 ### Updating after code changes
 

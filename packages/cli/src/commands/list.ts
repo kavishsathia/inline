@@ -13,6 +13,7 @@ export function runList(_args: ParsedArgs): void {
   process.stdout.write(`${store.comments.length} comment(s) on ${repo.branch}:\n\n`);
   for (const c of store.comments) {
     const firstLine = c.body.split("\n")[0];
-    process.stdout.write(`  ${c.file}:${c.line}  [${c.author}]\n    ${firstLine}\n`);
+    const shortId = c.id.slice(0, 8);
+    process.stdout.write(`  ${shortId}  ${c.file}:${c.line}  [${c.author}]\n    ${firstLine}\n`);
   }
 }

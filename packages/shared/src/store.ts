@@ -37,6 +37,28 @@ export function addComment(repoPath: string, branch: string, comment: Comment): 
   return store;
 }
 
+/**
+ * Remove every comment matching `predicate`. Returns the removed comments and
+ * rewrites the store only if something actually changed.
+ */
+export function removeComments(
+  repoPath: string,
+  branch: string,
+  predicate: (c: Comment) => boolean
+): { removed: Comment[]; store: CommentStore } {
+  const store = readStore(repoPath, branch);
+  const removed: Comment[] = [];
+  store.comments = store.comments.filter((c) => {
+    if (predicate(c)) {
+      removed.push(c);
+      return false;
+    }
+    return true;
+  });
+  if (removed.length > 0) writeStore(store);
+  return { removed, store };
+}
+
 /** Maintain repoHash -> repoPath so the data dir is human-debuggable. */
 function updateIndex(repoPath: string): void {
   const idxFile = indexFile();

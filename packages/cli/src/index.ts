@@ -1,5 +1,6 @@
 import { parseArgs } from "./args";
 import { runComment } from "./commands/comment";
+import { runDismiss } from "./commands/dismiss";
 import { runList } from "./commands/list";
 import { runPath } from "./commands/path";
 
@@ -9,6 +10,9 @@ Usage:
   inline comment <file>:<line> "message"      Leave a comment on a line
   inline comment --file <f> --line <n> "msg"  (explicit-flag form)
   inline list                                 List comments on this branch
+  inline dismiss <id>                         Dismiss a comment by id (prefix ok)
+  inline dismiss <file>:<line>                Dismiss comment(s) at a location
+  inline dismiss --all                        Dismiss every comment on this branch
   inline path                                 Print the active store path
 
 Comment options:
@@ -27,6 +31,9 @@ function main(): void {
       break;
     case "list":
       runList(args);
+      break;
+    case "dismiss":
+      runDismiss(args);
       break;
     case "path":
       runPath(args);
