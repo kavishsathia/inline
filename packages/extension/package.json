@@ -25,6 +25,7 @@
   "scripts": {
     "build": "node esbuild.js",
     "watch": "node esbuild.js --watch",
+    "test": "esbuild test/anchor.test.ts --bundle --platform=node --outfile=dist-test/anchor.test.js && node dist-test/anchor.test.js",
     "package": "vsce package --no-dependencies -o inline.vsix",
     "install-local": "npm run build && npm run package && code --install-extension inline.vsix --force"
   },

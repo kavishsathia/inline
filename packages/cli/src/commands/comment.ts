@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import * as fs from "fs";
 import * as path from "path";
-import { addComment, Comment, hashText, resolveRepo, storeFile } from "@inline/shared";
+import { addComment, ANCHOR_CONTEXT, Comment, hashText, resolveRepo, storeFile } from "@inline/shared";
 import { ParsedArgs } from "../args";
 
 /** Parse a `<file>:<line>` shorthand positional, if present. */
@@ -41,9 +41,13 @@ export function runComment(args: ParsedArgs): void {
   const repo = resolveRepo(path.dirname(abs));
   const relFile = path.relative(repo.repoPath, abs).split(path.sep).join("/");
 
-  // Capture the anchored line's text so the renderer can relocate it later.
+  // Capture the anchored line plus a window of surrounding context, so the
+  // renderer can relocate the comment even if the anchor line itself changes.
   const lines = fs.readFileSync(abs, "utf8").split("\n");
-  const anchorText = lines[lineArg - 1] ?? "";
+  const idx = lineArg - 1;
+  const anchorText = lines[idx] ?? "";
+  const contextBefore = lines.slice(Math.max(0, idx - ANCHOR_CONTEXT), idx);
+  const contextAfter = lines.slice(idx + 1, idx + 1 + ANCHOR_CONTEXT);
 
   const comment: Comment = {
     id: randomUUID(),
@@ -51,6 +55,8 @@ export function runComment(args: ParsedArgs): void {
     line: lineArg,
     anchorText,
     anchorHash: hashText(anchorText),
+    contextBefore,
+    contextAfter,
     body,
     author,
     createdAt: new Date().toISOString(),

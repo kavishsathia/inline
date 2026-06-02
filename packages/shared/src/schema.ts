@@ -1,6 +1,9 @@
 /** Current on-disk schema version for a comment store file. */
 export const STORE_VERSION = 1 as const;
 
+/** How many lines of surrounding context to capture on each side of an anchor. */
+export const ANCHOR_CONTEXT = 3;
+
 /**
  * A single piece of agent commentary anchored to a line in a file.
  *
@@ -18,6 +21,10 @@ export interface Comment {
   anchorText: string;
   /** sha256(anchorText)[:16] — cheap equality check for relocation. */
   anchorHash: string;
+  /** Up to ANCHOR_CONTEXT lines immediately above the anchor, in file order. */
+  contextBefore?: string[];
+  /** Up to ANCHOR_CONTEXT lines immediately below the anchor, in file order. */
+  contextAfter?: string[];
   /** The comment body (markdown allowed). */
   body: string;
   /** Who left it — e.g. "agent", or a tool/model name. */
