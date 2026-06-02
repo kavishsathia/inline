@@ -1,0 +1,14 @@
+{
+  "name": "inline-monorepo",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Anchor agent commentary to the lines it's about, rendered inline in VS Code.",
+  "workspaces": [
+    "packages/shared",
+    "packages/cli",
+    "packages/extension"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present"
+  }
+}
