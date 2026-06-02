@@ -5,9 +5,58 @@ disconnected from the code it describes. **inline** moves that commentary to
 where it belongs: anchored to the exact line it's about, rendered inside VS Code.
 
 - **`inline` CLI** — an agent leaves a note on a file/line:
-  `inline comment --file src/foo.ts --line 42 "adding retry here, upstream flakes"`
+  `inline comment src/foo.ts:42 "adding retry here, upstream flakes"`
 - **VS Code extension** — watches the comment store and renders each note as a
   real inline `CommentThread` on the line it points at.
+
+## Setup
+
+Prerequisites: Node 18+ and VS Code with the `code` CLI on your `PATH`
+(in VS Code: `Cmd+Shift+P` → "Shell Command: Install 'code' command in PATH").
+
+```bash
+# 1. Install deps and build all three packages
+npm install
+npm run build
+
+# 2. Install the VS Code extension (builds, packages, and installs the .vsix)
+npm run install-local --workspace inline-vscode
+#    then reload VS Code: Cmd+Shift+P → "Developer: Reload Window"
+
+# 3. Make the `inline` CLI available globally
+cd packages/cli && npm link && cd ../..
+```
+
+Verify:
+
+```bash
+inline help                  # CLI is on your PATH
+code --list-extensions | grep inline   # extension is installed
+```
+
+### Try it
+
+```bash
+# Leave a comment on a line of any file in a git repo
+inline comment src/app.js:42 "retry wraps the flaky upstream"
+
+# In VS Code, open that file — the note renders inline on line 42.
+# Edits and branch switches update the rendered comments live.
+```
+
+The repo ships a playground at `examples/demo/app.js` with a couple of
+pre-seeded comments to confirm everything is wired up.
+
+### Updating after code changes
+
+```bash
+npm run build                                  # rebuild all packages
+npm run install-local --workspace inline-vscode  # reinstall the extension
+# the linked `inline` CLI picks up rebuilds automatically (it's symlinked)
+```
+
+Bump the extension's `version` in `packages/extension/package.json` when you
+want VS Code to show it as an update.
 
 ## Layout
 

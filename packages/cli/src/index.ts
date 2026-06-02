@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import { parseArgs } from "./args";
 import { runComment } from "./commands/comment";
 import { runList } from "./commands/list";
