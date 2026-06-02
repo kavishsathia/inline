@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.png" alt="inline" width="60%" />
+</p>
+
 # inline
 
 Coding agents narrate into the terminal, where the commentary is ephemeral and
