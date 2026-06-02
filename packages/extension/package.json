@@ -1,0 +1,35 @@
+{
+  "name": "inline-vscode",
+  "displayName": "inline",
+  "description": "Render agent commentary as inline comments anchored to the lines it's about.",
+  "version": "0.0.0",
+  "private": true,
+  "publisher": "inline",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "inline.refresh",
+        "title": "inline: Refresh comments"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch"
+  },
+  "dependencies": {
+    "@inline/shared": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.4.0"
+  }
+}
