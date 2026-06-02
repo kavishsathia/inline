@@ -1,5 +1,7 @@
 import * as vscode from "vscode";
+import { removeComments } from "@inline/shared";
 import { FolderManager } from "./manager";
+import { threadRefs } from "./registry";
 
 let controller: vscode.CommentController | undefined;
 const managers = new Map<string, FolderManager>();
@@ -15,6 +17,13 @@ export function activate(context: vscode.ExtensionContext): void {
     vscode.workspace.onDidChangeWorkspaceFolders(sync),
     vscode.commands.registerCommand("inline.refresh", () => {
       for (const m of managers.values()) m.reload();
+    }),
+    vscode.commands.registerCommand("inline.dismissThread", (thread: vscode.CommentThread) => {
+      const ref = threadRefs.get(thread);
+      // Remove from the store first; the store watcher will reconcile, but we
+      // dispose the thread now so the editor reacts instantly.
+      if (ref) removeComments(ref.repoPath, ref.branch, (c) => c.id === ref.commentId);
+      thread.dispose();
     }),
     new vscode.Disposable(() => disposeAll())
   );

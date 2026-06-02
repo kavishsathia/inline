@@ -2,6 +2,7 @@ import * as path from "path";
 import * as vscode from "vscode";
 import { readStore, resolveRepo, storeFile, RepoContext } from "@inline/shared";
 import { renderComment } from "./render";
+import { threadRefs } from "./registry";
 
 /**
  * Owns the inline comments for a single workspace folder: resolves the
@@ -68,7 +69,14 @@ export class FolderManager {
     const store = readStore(this.repo.repoPath, this.repo.branch);
     for (const c of store.comments) {
       const thread = renderComment(this.controller, this.repo.repoPath, c);
-      if (thread) this.threads.push(thread);
+      if (thread) {
+        threadRefs.set(thread, {
+          repoPath: this.repo.repoPath,
+          branch: this.repo.branch,
+          commentId: c.id,
+        });
+        this.threads.push(thread);
+      }
     }
   }
 

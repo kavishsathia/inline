@@ -50,7 +50,9 @@ inline dismiss --all
 ```
 
 In VS Code, open that file — the note renders inline on line 42. Edits, branch
-switches, and dismissals all update the rendered comments live.
+switches, and dismissals all update the rendered comments live. You can also
+dismiss a comment straight from the editor with the ✓ button on the thread,
+which removes it from the store (so the agent sees it's been handled).
 
 Try it against the playground at `examples/demo/app.js`:
 

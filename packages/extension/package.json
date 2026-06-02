@@ -19,8 +19,22 @@
       {
         "command": "inline.refresh",
         "title": "inline: Refresh comments"
+      },
+      {
+        "command": "inline.dismissThread",
+        "title": "Dismiss",
+        "icon": "$(check)"
       }
-    ]
+    ],
+    "menus": {
+      "comments/commentThread/title": [
+        {
+          "command": "inline.dismissThread",
+          "group": "inline@1",
+          "when": "commentController == inline"
+        }
+      ]
+    }
   },
   "scripts": {
     "build": "node esbuild.js",
