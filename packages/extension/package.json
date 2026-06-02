@@ -2,9 +2,12 @@
   "name": "inline-vscode",
   "displayName": "inline",
   "description": "Render agent commentary as inline comments anchored to the lines it's about.",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.1",
   "publisher": "inline",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kavishsathia/inline.git"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -21,14 +24,15 @@
   },
   "scripts": {
     "build": "node esbuild.js",
-    "watch": "node esbuild.js --watch"
-  },
-  "dependencies": {
-    "@inline/shared": "*"
+    "watch": "node esbuild.js --watch",
+    "package": "vsce package --no-dependencies -o inline.vsix",
+    "install-local": "npm run build && npm run package && code --install-extension inline.vsix --force"
   },
   "devDependencies": {
+    "@inline/shared": "*",
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^2.24.0",
     "esbuild": "^0.20.0",
     "typescript": "^5.4.0"
   }
